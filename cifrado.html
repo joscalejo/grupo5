@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Cifrado César — Web</title>
+  <title>Cifrado César — 6398 Grupo 5 </title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-6">
   <main class="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-6">
     <header class="mb-4">
       <h1 class="text-2xl font-semibold">Cifrado César — Grupo 5</h1>
-      <p class="text-sm text-slate-500">Interfaz web simple de nuestro proyecto, permite al usuario cifrar y descifrar manteniendo mayúsculas y minúsculas, además, tiene la opcion de incluir la rotacion de números.</p>
+      <p class="text-sm text-slate-500">Interfaz web simple de nuestro proyecto, permite al usuario cifrar y descifrar manteniendo mayúsculas y minúsculas, además tiene la opcion de incluir la rotacion de números.</p>
     </header>
 
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <section class="grid grid-cols-1 gap-4">
       <div>
         <label class="block text-sm font-medium text-slate-700">Texto</label>
         <textarea id="inputText" rows="8" class="mt-2 p-3 w-full border rounded-md" placeholder="Escribe o pega aquí el texto..."></textarea>
@@ -38,6 +38,7 @@
         <div class="mt-3 flex gap-2">
           <button id="btnCopy" class="px-4 py-2 bg-slate-800 text-white rounded-md">Copiar resultado</button>
           <button id="btnSave" class="px-4 py-2 bg-slate-600 text-white rounded-md">Guardar .txt</button>
+          <button id="btnExplain" class="px-4 py-2 bg-indigo-600 text-white rounded-md">Explicar</button>
         </div>
 
       </div>
@@ -50,8 +51,75 @@
           <label class="block text-sm font-medium text-slate-700">Resultados (fuerza bruta)</label>
           <div id="bruteList" class="mt-2 space-y-2 max-h-48 overflow-auto p-2 border rounded-md bg-white"></div>
         </div>
+
       </div>
     </section>
+
+    <!-- Nuevo bloque de Explicación Didáctica ocupando todo el ancho -->
+    <div id="explanationBox" class="mt-6 hidden bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <!-- Columna 1: Introducción y controles -->
+        <div class="col-span-1 p-3">
+          <h2 class="text-lg font-semibold mb-2">Explicación del Cifrado César</h2>
+          <p class="text-sm text-slate-600">Esta sección explica paso a paso cómo se aplica la <strong>aritmética modular</strong> en el cifrado César. Usa los controles para probar cualquier carácter (o toma la primera letra del texto ingresado).</p>
+
+          <div class="mt-4">
+            <label class="block text-sm font-medium">Diccionario</label>
+            <div class="mt-2 flex items-center gap-3">
+              <label class="flex items-center gap-2">
+                <input id="dicAlpha" name="dicChoice" type="radio" class="w-4 h-4" checked />
+                <span class="text-sm">Alfabeto (26)</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input id="dicAlphaNum" name="dicChoice" type="radio" class="w-4 h-4" />
+                <span class="text-sm">Alfanumérico (36)</span>
+              </label>
+            </div>
+
+            <div class="mt-3">
+              <label class="block text-sm font-medium">Ejemplo (editable)</label>
+              <div class="mt-2 flex items-center gap-2">
+                <input id="exampleCharMain" maxlength="1" placeholder="a" class="p-2 border rounded-md w-20 text-center" />
+                <input id="exampleShiftMain" type="number" value="3" min="0" class="p-2 border rounded-md w-24" />
+                <button id="exampleRunMain" class="px-3 py-2 bg-emerald-600 text-white rounded-md">Ver paso a paso</button>
+              </div>
+              <div id="exampleHint" class="mt-2 text-xs text-slate-500">Se usará la primera letra del texto, pero puedes editarla aquí.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Columna 2: Pasos didácticos -->
+        <div class="col-span-1 p-3 bg-slate-50 rounded-md">
+          <h3 class="font-medium mb-2">Pasos</h3>
+          <ol class="list-decimal pl-5 text-sm space-y-2 text-slate-700">
+            <li><strong>Convertir</strong>: letra → número (índice en el diccionario).</li>
+            <li><strong>Sumar</strong>: añadir el desplazamiento <code>k</code>.</li>
+            <li><strong>Aplicar módulo</strong>: usar <code>(i + k) mod n</code> para que el índice quede dentro del diccionario.</li>
+            <li><strong>Convertir</strong>: número → nuevo carácter.</li>
+          </ol>
+
+          <div id="stepResult" class="mt-4 text-sm text-slate-700 p-2 border rounded-md bg-white hidden"></div>
+        </div>
+
+        <!-- Columna 3: Visualización / Mapeo -->
+        <div class="col-span-1 p-3">
+          <h3 class="font-medium mb-2">Tabla de mapeo</h3>
+          <!--div id="mapTableMain" class="text-sm max-h-48 overflow-auto border rounded-md bg-white p-2"></div-->
+          <div id="exampleResultMain" class="mt-3 text-sm text-slate-700 p-2 border rounded-md bg-white"></div>
+        </div>
+      </div>
+    </div> 
+
+          <div id="exampleResult" class="mt-3 text-sm text-slate-700 p-2 border rounded-md bg-white"></div>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-sm font-medium">Tabla de mapeo (índice → carácter)</label>
+          <div id="mapTable" class="mt-2 text-sm max-h-40 overflow-auto border rounded-md bg-white p-2"></div>
+        </div>
+      </div>
+    </div>
 
     <footer class="mt-6 text-sm text-slate-500">Preserva mayúsculas. Los caracteres no definidos (puntuación, espacios) se mantienen.</footer>
   </main>
@@ -90,6 +158,33 @@ const btnSave = document.getElementById('btnSave');
 const btnBrute = document.getElementById('btnBrute');
 const bruteBox = document.getElementById('bruteBox');
 const bruteList = document.getElementById('bruteList');
+const btnExplain = document.getElementById('btnExplain');
+const explainBox = document.getElementById('explainBox');
+const dictBox = document.getElementById('dictBox');
+const mapTable = document.getElementById('mapTable');
+const exampleChar = document.getElementById('exampleChar');
+const exampleShift = document.getElementById('exampleShift');
+const exampleRotNum = document.getElementById('exampleRotNum');
+const exampleRun = document.getElementById('exampleRun');
+const exampleResult = document.getElementById('exampleResult');
+
+function renderDict(rot) {
+  const dic = rot ? ABC_LETRAS_NUM : ABC_LETRAS;
+  // render map table only (we removed dictBox en la versión final)
+  mapTable.innerHTML = '';
+  const table = document.createElement('div');
+  table.className = 'grid grid-cols-4 gap-2 text-xs';
+  for (let i=0;i<dic.length;i++){
+    const cell = document.createElement('div');
+    cell.className = 'p-1 border rounded-sm flex items-center justify-between';
+    cell.innerHTML = `<div class="font-semibold">${i}</div><div>${dic[i]}</div>`;
+    table.appendChild(cell);
+  }
+  mapTable.appendChild(table);
+} 
+
+// initial render
+renderDict(false);
 
 btnEncrypt.addEventListener('click', () => {
   const text = inputText.value;
@@ -154,8 +249,114 @@ btnBrute.addEventListener('click', () => {
   bruteBox.classList.remove('hidden');
 });
 
-function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+// explicación: muestra/oculta el bloque didáctico y sincroniza controles
+btnExplain.addEventListener('click', () => {
+  const box = document.getElementById('explanationBox');
+  const showing = box.classList.toggle('hidden');
+  if (!showing) {
+    // se acaba de mostrar: sincronizar controles y render
+    const rot = rotNumbersEl.checked;
+    const useAlphaNum = document.getElementById('dicAlphaNum').checked;
+    renderDict(useAlphaNum);
+    // set example char from first valid char of the input
+    const txt = inputText.value || '';
+    const first = txt.trim().length ? txt.trim()[0] : '';
+    const exCharEl = document.getElementById('exampleCharMain');
+    if (exCharEl && (!exCharEl.value || exCharEl.value === '')) exCharEl.value = first;
+    // sync shifts
+    const exShift = document.getElementById('exampleShiftMain');
+    if (exShift) exShift.value = shiftEl.value;
+    // hide previous step result
+    const stepRes = document.getElementById('stepResult'); if (stepRes) stepRes.classList.add('hidden');
+  }
+});
+
+// actualizar tabla al cambiar diccionario
+const dicAlpha = document.getElementById('dicAlpha');
+const dicAlphaNum = document.getElementById('dicAlphaNum');
+if (dicAlpha) dicAlpha.addEventListener('change', () => renderDict(false));
+if (dicAlphaNum) dicAlphaNum.addEventListener('change', () => renderDict(true));
+
+// al escribir en el textarea, actualizar el placeholder del ejemplo (solo si el usuario no editó manualmente)
+let userEditedExample = false;
+const exampleCharMain = document.getElementById('exampleCharMain');
+if (exampleCharMain) exampleCharMain.addEventListener('input', () => { userEditedExample = true; });
+inputText.addEventListener('input', () => {
+  if (userEditedExample) return;
+  const txt = inputText.value || '';
+  const first = txt.trim().length ? txt.trim()[0] : '';
+  if (exampleCharMain && (!exampleCharMain.value || exampleCharMain.value === '')) exampleCharMain.value = first;
+});
+
+// manejar el botón principal del ejemplo (paso a paso)
+const exampleRunMain = document.getElementById('exampleRunMain');
+if (exampleRunMain) exampleRunMain.addEventListener('click', () => {
+  const ch = document.getElementById('exampleCharMain').value || '';
+  const k = parseInt(document.getElementById('exampleShiftMain').value) || 0;
+  const useAlphaNum = document.getElementById('dicAlphaNum').checked;
+  const dic = useAlphaNum ? ABC_LETRAS_NUM : ABC_LETRAS;
+  const n = dic.length;
+  const lower = ch.toLowerCase();
+  const i = dic.indexOf(lower);
+  const stepRes = document.getElementById('stepResult');
+  const exampleResultMain = document.getElementById('exampleResultMain');
+  if (i === -1) {
+    if (stepRes) { stepRes.classList.remove('hidden'); stepRes.innerHTML = `<div class="text-sm text-rose-600">El carácter <code>${escapeHtml(ch)}</code> no está en el diccionario seleccionado.</div>`; }
+    if (exampleResultMain) exampleResultMain.innerHTML = '';
+    return;
+  }
+  const newIdx = (i + k) % n;
+  const cifrado = dic[newIdx];
+  const isUpper = ch === ch.toUpperCase() && ch.toLowerCase() !== ch.toUpperCase();
+  const displayCifrado = isUpper ? cifrado.toUpperCase() : cifrado;
+  // mostrar pasos
+  if (stepRes) {
+    stepRes.classList.remove('hidden');
+    stepRes.innerHTML = `
+      <div><strong>Posición original</strong>: i = ${i}</div>
+      <div><strong>Desplazamiento</strong>: k = ${k}</div>
+      <div><strong>Aplicación modular</strong>: (i + k) mod n = (${i} + ${k}) mod ${n} = ${newIdx}</div>
+      <div class="mt-2"><strong>Carácter resultante</strong>: ${escapeHtml(displayCifrado)}</div>
+    `;
+  }
+  if (exampleResultMain) {
+    exampleResultMain.innerHTML = `<div><strong>Resultado:</strong> ${escapeHtml(ch)} → <strong>${escapeHtml(displayCifrado)}</strong></div>`;
+  }
+  renderDict(useAlphaNum);
+});
+
+exampleRun.addEventListener('click', () => {
+  const ch = exampleChar.value || 'a';
+  const k = parseInt(exampleShift.value) || 0;
+  const rot = exampleRotNum.checked;
+  const dic = rot ? ABC_LETRAS_NUM : ABC_LETRAS;
+  const n = dic.length;
+  const lower = ch.toLowerCase();
+  const i = dic.indexOf(lower);
+  if (i === -1) {
+    exampleResult.innerHTML = `<div class="text-sm text-rose-600">El carácter <code>${escapeHtml(ch)}</code> no está en el diccionario seleccionado.</div>`;
+    return;
+  }
+  const newIdx = (i + k) % n;
+  const cifrado = dic[newIdx];
+  const isUpper = ch === ch.toUpperCase() && ch.toLowerCase() !== ch.toUpperCase();
+  const displayCifrado = isUpper ? cifrado.toUpperCase() : cifrado;
+  exampleResult.innerHTML = `
+    <div><strong>Diccionario (n = ${n})</strong></div>
+    <div class="mt-2">Posición original: <strong>i = ${i}</strong></div>
+    <div>Desplazamiento: <strong>k = ${k}</strong></div>
+    <div class="mt-1">Cálculo modular: <code>(i + k) mod n = (${i} + ${k}) mod ${n} = ${newIdx}</code></div>
+    <div class="mt-2">Carácter resultante: <strong>${escapeHtml(displayCifrado)}</strong></div>
+    <div class="mt-2 text-xs text-slate-500">Nota: se preserva mayúscula/minúscula del carácter original.</div>
+  `;
+});
+
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// update dict render when rotNumbers or shift changes (live)
+rotNumbersEl.addEventListener('change', () => renderDict(rotNumbersEl.checked));
+shiftEl.addEventListener('input', () => exampleShift.value = shiftEl.value);
+
 </script>
 </body>
 </html>
-
