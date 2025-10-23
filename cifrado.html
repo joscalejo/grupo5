@@ -183,7 +183,7 @@ function renderDict(rot) {
   mapTable.appendChild(table);
 } 
 
-// initial render
+
 renderDict(false);
 
 btnEncrypt.addEventListener('click', () => {
@@ -353,10 +353,10 @@ exampleRun.addEventListener('click', () => {
 
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-// update dict render when rotNumbers or shift changes (live)
 rotNumbersEl.addEventListener('change', () => renderDict(rotNumbersEl.checked));
 shiftEl.addEventListener('input', () => exampleShift.value = shiftEl.value);
 
 </script>
 </body>
 </html>
+
